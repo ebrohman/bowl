@@ -3,10 +3,12 @@ require "bowl"
 module Bowl
   class TenthFrame < Frame
     def finished?
-      if strike? || spare?
-        rolls.count >= 3
+      if strike?
+        third_roll
+      elsif second_roll
+        true
       else
-        rolls.count >= 2
+        false
       end
     end
 
