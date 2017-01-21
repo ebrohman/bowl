@@ -42,18 +42,17 @@ module Bowl
     end
 
     def spare?
-      first_roll != 10 &&
-        first_roll.to_i + second_roll.to_i == 10
+      !strike? && remaining_pins == 0
     end
 
     def first_roll() rolls[0]; end
     def second_roll() rolls[1]; end
 
+    private
+
     def remaining_pins
       PINS - ( first_roll.to_i + second_roll.to_i )
     end
-
-    private
 
     def validate_shot!( pins )
       raise RollError, "Only #{remaining_pins} pin(s) remain" if

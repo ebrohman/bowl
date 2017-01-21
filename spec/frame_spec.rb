@@ -9,7 +9,7 @@ RSpec.describe Frame do
     subject( :frame ) { described_class.new }
 
     it "starts with 10 remaining pins" do
-      expect( frame.remaining_pins ).to eq 10
+      expect( frame.send :remaining_pins ).to eq 10
     end
 
     it "has a frame number" do
@@ -83,7 +83,7 @@ RSpec.describe Frame do
 
       it "subtracts from the remaining_pins" do
         expect{ frame.register_shot( 5 ) }.
-          to change{ frame.remaining_pins }.from( 10 ).to 5
+          to change{ frame.send :remaining_pins }.from( 10 ).to 5
       end
     end
 

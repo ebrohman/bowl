@@ -23,8 +23,31 @@ RSpec.describe TenthFrame do
     it "can't always have 3 rolls" do
       f.register_shot 3
       f.register_shot 3
-      # binding.pry
       expect( f.finished? ).to be
+    end
+
+    it "can't roll an 11" do
+      expect { f.register_shot 11 }.
+        to raise_error Frame::RollError
+    end
+
+    it "can't roll an 11 on the second shot after a strike" do
+      expect do
+        f.register_shot 10
+        f.register_shot 11
+      end.to raise_error Frame::RollError
+    end
+
+    it "can't roll an 11 on the third shot after a strike" do
+      expect do
+        f.register_shot 10
+        f.register_shot 10
+        f.register_shot 11
+      end.to raise_error Frame::RollError
+    end
+
+    it "cant roll more than 10 for the first two rolls" do
+      expect{ f.register_shot 11 }.to raise_error
     end
   end
 end

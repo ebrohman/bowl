@@ -3,32 +3,26 @@ require "bowl"
 module Bowl
   class TenthFrame < Frame
     def finished?
-      if strike?
-        third_roll
-      elsif second_roll
-        true
-      else
-        false
-      end
+      return super unless strike?
+      third_roll ? true : false
     end
 
-    def ball_total
-      first_roll.to_i +
-        second_roll.to_i +
-          third_roll.to_i
-    end
+    def ball_total() super + third_roll.to_i end
 
     private
 
-    def add_to_ball_total( pins )
-      return if finished?
-      rolls << pins
+    def remaining_pins
+      return super unless strike?
+      second_roll_strike? ? PINS :
+        PINS - ( second_roll || 0 )
     end
 
     def add_to_bonus_total( _ ) end
 
-    def third_roll
-      rolls[2]
+    def second_roll_strike?
+      second_roll == PINS
     end
+
+    def third_roll() rolls[2] end
   end
 end
