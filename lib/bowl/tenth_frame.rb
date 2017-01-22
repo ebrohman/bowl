@@ -13,15 +13,11 @@ module Bowl
 
     def remaining_pins
       return super unless strike?
-      second_roll_strike? ? PINS :
-        PINS - ( second_roll || 0 )
+      second_roll == PINS ? PINS :
+        PINS - second_roll.to_i
     end
 
     def add_to_bonus_total( _ ) end
-
-    def second_roll_strike?
-      second_roll == PINS
-    end
 
     def third_roll() rolls[2] end
   end
