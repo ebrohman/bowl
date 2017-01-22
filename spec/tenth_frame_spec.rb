@@ -5,8 +5,6 @@ RSpec.describe TenthFrame do
   describe "#finished" do
     let( :f ) { described_class.new }
 
-    after( :each ) { f.rolls = [] }
-
     it "can only have three rolls if the first is a strike" do
       f.register_shot 3
       f.register_shot 7
@@ -47,7 +45,8 @@ RSpec.describe TenthFrame do
     end
 
     it "cant roll more than 10 for the first two rolls" do
-      expect{ f.register_shot 11 }.to raise_error
+      expect{ f.register_shot 11 }.
+        to raise_error Frame::RollError
     end
   end
 end

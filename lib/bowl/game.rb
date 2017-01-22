@@ -3,9 +3,7 @@ require "bowl"
 module Bowl
   class Game
     NUM_FRAMES = 10
-
     class GameError < StandardError; end
-
     attr_reader :current_frame, :frame_model
     attr_accessor :frames
 
@@ -19,6 +17,7 @@ module Bowl
     end
 
     def roll( pins )
+      assert_game_is_not_over!
       check_frame!
       frames.each { |f| f.register_shot pins }
       self
@@ -36,7 +35,6 @@ module Bowl
     private
 
     def check_frame!
-      assert_game_is_not_over!
       if current_frame.finished?
         approaching_tenth_frame? ?
           add_frame( frame_type: TenthFrame ) :

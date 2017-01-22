@@ -25,14 +25,6 @@ module Bowl
       remaining_pins == 0 || second_roll
     end
 
-    def ball_total
-      first_roll.to_i + second_roll.to_i
-    end
-
-    def bonus_total
-      bonus_rolls.inject( :+ ) || 0
-    end
-
     def total
       ball_total + bonus_total
     end
@@ -45,10 +37,18 @@ module Bowl
       !strike? && remaining_pins == 0
     end
 
+    private
+
     def first_roll() rolls[0]; end
     def second_roll() rolls[1]; end
 
-    private
+    def ball_total
+      first_roll.to_i + second_roll.to_i
+    end
+
+    def bonus_total
+      bonus_rolls.inject( :+ ) || 0
+    end
 
     def remaining_pins
       PINS - ( first_roll.to_i + second_roll.to_i )
