@@ -13,15 +13,16 @@ loop do
     puts "Game Over ---- Score ---- #{game.score}"
     break
   end
-  puts "\nFrame complete, Moving to Frame #{game.current_frame.frame_number + 1}" \
+  puts "\nFrame complete, Moving to Frame #{game.frames.size + 1}" \
     if game.current_frame.finished?
   begin
     puts <<-STR
     How many pins?
     STR
 
-    pins = gets.to_i
-    game.roll( pins )
+    pins = gets
+    game.roll pins
+    puts "SCORE - #{game.score}\n"
     rescue StandardError => e
       puts "#{e.message} \n"
       puts "Try rolling again"

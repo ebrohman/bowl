@@ -17,9 +17,10 @@ module Bowl
     end
 
     def roll( pins )
+      validate_pins! pins
       assert_game_is_not_over!
       check_frame!
-      frames.each { |f| f.register_shot pins }
+      frames.each { |f| f.register_shot pins.to_i }
       self
     end
 
@@ -28,7 +29,7 @@ module Bowl
     end
 
     def over?
-      current_frame.frame_number == NUM_FRAMES &&
+      frames.size == NUM_FRAMES &&
         current_frame.finished?
     end
 
@@ -43,16 +44,16 @@ module Bowl
     end
 
     def add_frame( frame_type: frame_model )
-      frames << frame_type.
-        new( frame_number: next_frame_number )
-    end
-
-    def next_frame_number
-      current_frame.frame_number + 1
+      frames << frame_type.new
     end
 
     def approaching_tenth_frame?
-      current_frame.frame_number == 9
+      frames.size == 9
+    end
+
+    def validate_pins!( pins )
+      raise GameError, "Pins must be a number" unless
+        pins.to_s.match /^[0-9]+$/
     end
 
     def assert_game_is_not_over!

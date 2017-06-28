@@ -9,13 +9,14 @@ module Bowl
 
     class RollError < StandardError; end
 
-    def initialize( frame_number: 1, rolls: [], bonus_rolls: [] )
+    def initialize( rolls: [], bonus_rolls: [] )
       @frame_number = frame_number
       @rolls = rolls
       @bonus_rolls = bonus_rolls
     end
 
     def register_shot( pins )
+      validate_shot!( pins )
       add_to_ball_total pins
       add_to_bonus_total pins
       self
@@ -56,12 +57,13 @@ module Bowl
 
     def validate_shot!( pins )
       raise RollError, "Only #{remaining_pins} pin(s) remain" if
-        pins > remaining_pins
+        pins > remaining_pins unless finished?
+
+      raise RollError, "Cannot roll more than #{PINS} pins" if pins > PINS
     end
 
     def add_to_ball_total( pins )
       return if finished?
-      validate_shot!( pins )
       rolls << pins
     end
 

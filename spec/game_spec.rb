@@ -45,6 +45,12 @@ RSpec.describe Bowl::Game do
         with 7
     end
 
+    it "validates that the shot is a number" do
+      expect {
+        described_class.new( frame_model: Frame ).roll( "seven" ) }.
+          to raise_error( described_class::GameError, "Pins must be a number" )
+    end
+
     context "the current frame is finished" do
       before( :each ) do
         allow( frame ).to receive( :finished? ).and_return true
@@ -53,14 +59,6 @@ RSpec.describe Bowl::Game do
       it "starts a new frame if the current frame is finished" do
         described_class.new( frame_model: frame_model ).roll 7
         expect( frame_model ).to have_received( :new ).twice
-      end
-
-      it "gives the new frame a frame number" do
-        game = described_class.new
-        game.roll 7
-        game.roll 3
-        game.roll 3
-        expect( game.current_frame.frame_number ).to eq 2
       end
     end
 
@@ -87,32 +85,28 @@ RSpec.describe Bowl::Game do
 
   describe "#score" do
     it "scores a perfect game" do
-      data = %w( 10 10 10 10 10 10 10 10 10 10 10 10 )
-      rolls = data.map( &:to_i )
+      rolls = %w( 10 10 10 10 10 10 10 10 10 10 10 10 )
       game = described_class.new
       rolls.each { |pins| game.roll pins }
       expect( game.score ).to eq 300
     end
 
     it "290" do
-      data = %w( 10 10 10 10 10 10 10 10 10 10 10 0 )
-      rolls = data.map( &:to_i )
+      rolls = %w( 10 10 10 10 10 10 10 10 10 10 10 0 )
       game = described_class.new
       rolls.each { |pins| game.roll pins }
       expect( game.score ).to eq 290
     end
 
     it "295" do
-      data = %w( 10 10 10 10 10 10 10 10 10 10 10 5 )                              #
-      rolls = data.map( &:to_i )
+      rolls = %w( 10 10 10 10 10 10 10 10 10 10 10 5 )                              #
       game = described_class.new
       rolls.each { |pins| game.roll pins }
       expect( game.score ).to eq 295
     end
 
     it "291" do
-      data = %w( 10 10 10 10 10 10 10 10 10 10 10 1 )
-      rolls = data.map( &:to_i )
+      rolls = %w( 10 10 10 10 10 10 10 10 10 10 10 1 )
       game = described_class.new
       rolls.each { |pins| game.roll pins }
       expect( game.score ).to eq 291

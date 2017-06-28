@@ -10,7 +10,6 @@ RSpec.describe Frame do
 
   describe "initialize" do
     its( :remaining_pins )  { should eq 10 }
-    its( :frame_number )    { should eq 1 }
     its( :ball_total )      { should eq 0 }
     its( :bonus_total )     { should eq 0 }
   end
